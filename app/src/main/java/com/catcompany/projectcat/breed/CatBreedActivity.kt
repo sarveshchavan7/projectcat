@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
+import androidx.paging.map
 import com.catcompany.breedlist.CatBreedListAdapter
 import com.catcompany.projectcat.R
 import com.catcompany.projectcat.databinding.ActivityCatBreedBinding
@@ -29,8 +30,8 @@ class CatBreedActivity : AppCompatActivity() {
         )
         binding.rvCatBreed.adapter = catBreedListAdapter
         safeLaunchWithRepeatOnLifecycle(state = Lifecycle.State.RESUMED) {
-            viewModel.catBreedsFlow.collect {
-                catBreedListAdapter.submitList(it)
+            viewModel.catBreedsFlow.collect { it ->
+                catBreedListAdapter.submitData(it.map { it.createCatBreed() })
             }
         }
         safeLaunchWithRepeatOnLifecycle(state = Lifecycle.State.RESUMED) {

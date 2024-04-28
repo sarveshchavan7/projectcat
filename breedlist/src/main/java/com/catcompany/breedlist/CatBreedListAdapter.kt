@@ -3,13 +3,13 @@ package com.catcompany.breedlist
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.ListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.catcompany.breedlist.databinding.ItemBreedLayoutBinding
 import com.catcompany.breedlist.model.CatBreed
 
 class CatBreedListAdapter(val link: Link) :
-    ListAdapter<CatBreed, CatBreedListAdapter.CatBreedViewHolder>(CatBreed.DiffUtils) {
+    PagingDataAdapter<CatBreed, CatBreedListAdapter.CatBreedViewHolder>(CatBreed.DiffUtils) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatBreedViewHolder {
         return CatBreedViewHolder(
@@ -28,10 +28,12 @@ class CatBreedListAdapter(val link: Link) :
     inner class CatBreedViewHolder(private val binding: ItemBreedLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(breed: CatBreed) {
+        fun bind(breed: CatBreed?) {
             binding.breed = breed
             binding.root.setOnClickListener {
-                link.onItemClick(breed)
+                breed?.let {
+                    link.onItemClick(breed)
+                }
             }
         }
     }

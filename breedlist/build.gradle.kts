@@ -45,6 +45,9 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    // Paging 3
+    implementation(libs.paging)
+
     implementation(libs.gson)
     implementation(project(":base"))
 }

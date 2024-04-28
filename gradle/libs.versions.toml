@@ -20,6 +20,7 @@ material = "1.11.0"
 firebase-bom = "32.8.1"
 activity-ktx = "1.9.0"
 secretsGradlePlugin = "2.0.1"
+paging_version = "3.2.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -48,6 +49,7 @@ firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashly
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 secrets-gradle-plugin = { module = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin", version.ref = "secretsGradlePlugin" }
+paging = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging_version" }
 
 
 [plugins]

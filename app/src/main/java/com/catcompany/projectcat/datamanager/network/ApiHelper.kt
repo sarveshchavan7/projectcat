@@ -4,5 +4,5 @@ import com.catcompany.projectcat.model.Breed
 import retrofit2.Response
 
 interface ApiHelper {
-    suspend fun getCatBreeds(): Response<List<Breed>>
+    suspend fun getCatBreeds(pageNumber : Int, limit : Int): Response<List<Breed>>
 }

@@ -118,6 +118,9 @@ dependencies {
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.analytics)
 
+    // Paging 3
+    implementation(libs.paging)
+
     // Dependent
     implementation(project(":breedlist"))
     implementation(project(":base"))

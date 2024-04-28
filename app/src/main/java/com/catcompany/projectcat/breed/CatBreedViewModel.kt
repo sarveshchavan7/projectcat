@@ -2,15 +2,20 @@ package com.catcompany.projectcat.breed
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
 import com.catcompany.analytics.AnalyticsConstants
 import com.catcompany.base.apiwrapper.unWrap
 import com.catcompany.base.utils.safeLaunch
 import com.catcompany.breedlist.CatBreedListAdapter
 import com.catcompany.breedlist.model.CatBreed
+import com.catcompany.projectcat.breed.pagingsource.CatBreedPagingSource
 import com.catcompany.projectcat.datamanager.DataManager
+import com.catcompany.projectcat.model.Breed
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,19 +25,20 @@ class CatBreedViewModel @Inject constructor(
 ) : AndroidViewModel(application),
     CatBreedListAdapter.Link {
 
-    val catBreedsFlow = MutableStateFlow<List<CatBreed>?>(emptyList())
+    val catBreedsFlow =
+        Pager(PagingConfig(10)) { catBreedPagingSource }.flow.cachedIn(viewModelScope)
     val onCatBreedClickEvent = Channel<CatBreed?>(Channel.CONFLATED)
+    private val catBreedPagingSource = CatBreedPagingSource(::getCatBreedList)
 
     init {
-        loadCatBreeds()
         trackCatBreedScreenVisitedEvent()
     }
 
-    private fun loadCatBreeds() {
-        safeLaunch(showToastOnError = true) {
-            catBreedsFlow.value = dataManager.getCatBreeds().unWrap().map {
-                it.createCatBreed()
-            }
+    private suspend fun getCatBreedList(pageNumber: Int): List<Breed> {
+        return try {
+            dataManager.getCatBreeds(pageNumber, 10).unWrap()
+        } catch (e: Exception) {
+            throw e
         }
     }
 
